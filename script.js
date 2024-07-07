@@ -6,6 +6,10 @@ let output = ""
 
 const calculate = (catchValue) => {
     if(catchValue === "=" && output !== ""){
+        if(output.includes('/0')){
+            display.value = "Error";
+            return;
+        }
         history.innerHTML = output;
         output = eval(output.replace("%","/100"));
     }else if (catchValue === "AC"){
@@ -14,8 +18,15 @@ const calculate = (catchValue) => {
     }else if(catchValue === "DEL"){
         output = output.toString().slice(0, -1);
     }else{
-        if (output === "" && operators.includes(catchValue)) return;
-        output += catchValue;
+        if(operators.includes(catchValue)){
+            if (output === "" || operators.includes(output.slice(-1))) {
+                output = output.slice(0, -1) + catchValue;
+            }else{
+                output += catchValue;
+            }
+        }else{
+            output += catchValue;
+        }   
     }
     display.value = output;
 }
